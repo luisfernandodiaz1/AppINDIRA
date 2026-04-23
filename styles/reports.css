@@ -1,0 +1,100 @@
+/* ═══════════════════════════════════════════════════════════════════
+   REPORTS.CSS – Reports Table · Progress · Compensations · Config
+   Transportes CI – Sistema de Turnos
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ══════════════════════════════════
+   REPORT TABLE
+══════════════════════════════════ */
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+}
+.report-table th {
+  padding: .6rem .75rem;
+  text-align: left;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+  white-space: nowrap;
+}
+.report-table td {
+  padding: .65rem .75rem;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: middle;
+}
+.report-table tr:last-child td { border-bottom: none; }
+.report-table tr:hover td      { background: var(--bg-overlay); }
+
+/* ── Progress bar ── */
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.progress-track {
+  flex: 1;
+  height: 6px;
+  background: var(--bg-overlay);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width .5s var(--ease);
+}
+.progress-fill.ok    { background: var(--green-500); }
+.progress-fill.over  { background: var(--red-400); }
+.progress-fill.under { background: var(--orange-400); }
+.progress-label {
+  font-size: .75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════
+   COMPENSATION ITEMS
+══════════════════════════════════ */
+.comp-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .65rem .75rem;
+  border-radius: var(--radius-md);
+  background: var(--orange-900);
+  border-left: 3px solid var(--orange-400);
+  margin-bottom: .5rem;
+  font-size: .84rem;
+}
+.comp-driver { font-weight: 700; color: var(--text-primary); }
+.comp-date   { color: var(--text-muted); font-size: .78rem; }
+.comp-badge  {
+  margin-left: auto;
+  background: var(--orange-400);
+  color: var(--bg-base);
+  border-radius: 4px;
+  font-size: .7rem;
+  font-weight: 700;
+  padding: .1rem .45rem;
+}
+
+/* ══════════════════════════════════
+   CONFIGURATION GRID
+══════════════════════════════════ */
+.config-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+.config-card { height: fit-content; }
+
+.config-actions {
+  display: flex;
+  gap: .75rem;
+  margin-top: .5rem;
+}

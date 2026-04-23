@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Sistema de Distribución de Turnos – Transportes CI. Planificación equitativa de turnos semanales para conductores con cumplimiento normativo colombiano." />
+  <title>Turnos CI – Transportes CI</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- SheetJS (Excel export) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <!-- CSS Modular -->
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/planner.css" />
+  <link rel="stylesheet" href="styles/drivers.css" />
+  <link rel="stylesheet" href="styles/reports.css" />
+</head>
+<body>
+
+  <!-- ──────────────────────────── SPLASH SCREEN ──────────────────────────── -->
+  <div id="splash" class="splash">
+    <div class="splash-inner">
+      <div class="splash-logo">
+        <svg width="56" height="56" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+          <rect width="56" height="56" rx="16" fill="url(#g1)"/>
+          <path d="M14 36 L28 16 L42 36" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="38" r="3" fill="#fff"/>
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2ecc71"/>
+              <stop offset="1" stop-color="#1a8a4a"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <h1 class="splash-title">Transportes CI</h1>
+      <p class="splash-sub">Sistema de Distribución de Turnos</p>
+      <div class="splash-bar"><div class="splash-bar-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- ──────────────────────────── APP SHELL ──────────────────────────── -->
+  <div id="app" class="app hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <svg width="36" height="36" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+          <rect width="56" height="56" rx="14" fill="url(#g2)"/>
+          <path d="M14 36 L28 16 L42 36" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="28" cy="38" r="3" fill="#fff"/>
+          <defs>
+            <linearGradient id="g2" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2ecc71"/>
+              <stop offset="1" stop-color="#1a8a4a"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="brand-text">
+          <span class="brand-name">Transportes CI</span>
+          <span class="brand-sub">Gestión de Turnos</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" role="navigation" aria-label="Módulos principales">
+        <button class="nav-item active" data-tab="dashboard" id="nav-dashboard" aria-current="page">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          <span>Dashboard</span>
+        </button>
+        <button class="nav-item" data-tab="planner" id="nav-planner">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          <span>Planeación</span>
+        </button>
+        <button class="nav-item" data-tab="drivers" id="nav-drivers">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/><path d="M16 3.13a4 4 0 010 7.75M21 21v-2a4 4 0 00-3-3.87"/></svg>
+          <span>Conductores</span>
+        </button>
+        <button class="nav-item" data-tab="reports" id="nav-reports">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+          <span>Reportes</span>
+        </button>
+        <button class="nav-item" data-tab="config" id="nav-config">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          <span>Configuración</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="sidebar-version">v1.0.0 · Ley 2101/2021</span>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="main-content">
+
+      <!-- ═══════════ TAB: DASHBOARD ═══════════ -->
+      <section class="tab-panel active" id="tab-dashboard" role="tabpanel" aria-labelledby="nav-dashboard">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Resumen semanal y estado general de la plantilla</p>
+          </div>
+          <div class="page-actions">
+            <span class="current-week-badge" id="dash-week-label">Semana actual</span>
+          </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <!-- Filter bar del Dashboard -->
+        <div class="filter-bar" id="dash-filter-bar">
+          <div class="search-box" style="flex:1;max-width:280px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="dash-search" placeholder="Buscar conductor..." aria-label="Buscar en dashboard" />
+          </div>
+          <div class="filter-chips" role="group" aria-label="Filtro por estado de horas">
+            <button class="filter-chip active" data-filter="all"  id="df-all"     >Todos</button>
+            <button class="filter-chip"        data-filter="ok"   id="df-ok"      >✅ OK</button>
+            <button class="filter-chip"        data-filter="under" id="df-under"  >🟡 Déficit</button>
+            <button class="filter-chip"        data-filter="over" id="df-over"   >🔴 Exceso</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid" id="kpi-grid">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Equity indicator + Alerts -->
+        <div class="dashboard-bottom">
+          <div class="card" id="equity-card">
+            <h2 class="card-title">Equidad de Horas</h2>
+            <div id="equity-content">
+              <p class="placeholder-text">Carga conductores para ver métricas.</p>
+            </div>
+          </div>
+
+          <div class="card" id="alerts-card">
+            <h2 class="card-title">
+              Alertas Activas
+              <span class="badge badge-danger" id="alert-count">0</span>
+            </h2>
+            <div id="alerts-list">
+              <p class="placeholder-text">Sin alertas activas.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ TAB: PLANEADOR ═══════════ -->
+      <section class="tab-panel" id="tab-planner" role="tabpanel" aria-labelledby="nav-planner">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Planeador Semanal</h1>
+            <p class="page-subtitle">Asignación de turnos conductor por conductor</p>
+          </div>
+          <div class="page-actions">
+            <button class="btn btn-ghost" id="btn-prev-week" aria-label="Semana anterior">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="15 18 9 12 15 6"/></svg>
+              Anterior
+            </button>
+            <span class="current-week-badge" id="planner-week-label">—</span>
+            <button class="btn btn-ghost" id="btn-next-week" aria-label="Semana siguiente">
+              Siguiente
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+            <button class="btn btn-secondary" id="btn-copy-week" title="Copiar turnos de la semana anterior" style="margin-right: 0.5rem;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              Clonar Anterior
+            </button>
+            <button class="btn btn-primary" id="btn-suggest">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              Sugerir Distribución
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter bar del Planeador -->
+        <div class="filter-bar" id="planner-filter-bar">
+          <div class="search-box" style="flex:1;max-width:260px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="planner-search" placeholder="Buscar conductor..." aria-label="Buscar en planeador" />
+          </div>
+          <div class="filter-chips" role="group" aria-label="Filtros rápidos del planeador">
+            <button class="filter-chip active" data-pf="all"      id="pf-all"     >Todos</button>
+            <button class="filter-chip"        data-pf="norest"   id="pf-norest"  >💤 Sin descanso</button>
+            <button class="filter-chip"        data-pf="hasrest"  id="pf-hasrest" >✅ Con descanso</button>
+            <button class="filter-chip"        data-pf="hasD"     id="pf-hasD"    >☀️ Con D</button>
+            <button class="filter-chip"        data-pf="hasN"     id="pf-hasN"    >🌙 Con N</button>
+            <button class="filter-chip"        data-pf="deficit"  id="pf-deficit" >⚠️ Déficit hrs</button>
+          </div>
+        </div>
+
+        <div class="planner-wrapper">
+          <div id="planner-table-container">
+            <p class="placeholder-text" style="padding:2rem;">Agrega conductores para comenzar la planeación.</p>
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="shift-legend">
+          <span class="legend-item"><span class="shift-chip shift-D">D</span> Día 07–17h</span>
+          <span class="legend-item"><span class="shift-chip shift-N">N</span> Noche 19–05h</span>
+          <span class="legend-item"><span class="shift-chip shift-L">L</span> Libre</span>
+          <span class="legend-item"><span class="shift-chip shift-LD">LD</span> Libre Descanso</span>
+          <span class="legend-item"><span class="shift-chip shift-HLD">HLD</span> Holgura Día</span>
+          <span class="legend-item"><span class="shift-chip shift-HLN">HLN</span> Holgura Noche</span>
+          <span class="planner-tip">👆 Haz clic en una celda para cambiar el turno</span>
+        </div>
+      </section>
+
+      <!-- ═══════════ TAB: CONDUCTORES ═══════════ -->
+      <section class="tab-panel" id="tab-drivers" role="tabpanel" aria-labelledby="nav-drivers">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Conductores</h1>
+            <p class="page-subtitle">Gestión de la plantilla activa</p>
+          </div>
+          <div class="page-actions">
+            <div class="search-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="search" id="driver-search" placeholder="Buscar conductor..." aria-label="Buscar conductor" />
+            </div>
+            <button class="btn btn-primary" id="btn-add-driver">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Agregar Conductor
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter bar de Conductores -->
+        <div class="filter-bar" id="drivers-filter-bar">
+          <div class="filter-chips" role="group" aria-label="Filtrar por estado">
+            <button class="filter-chip active" data-status="all"      id="dsf-all"      >Todos</button>
+            <button class="filter-chip"        data-status="active"   id="dsf-active"   >🟢 Activos</button>
+            <button class="filter-chip"        data-status="inactive" id="dsf-inactive" >⚫ Inactivos</button>
+            <button class="filter-chip"        data-status="vacation" id="dsf-vacation" >🏖️ Vacaciones</button>
+          </div>
+          <div class="filter-chips" role="group" aria-label="Filtrar por licencia">
+            <button class="filter-chip active" data-license="all" id="dlf-all">Todas las lic.</button>
+            <button class="filter-chip"        data-license="C1"  id="dlf-c1" >C1</button>
+            <button class="filter-chip"        data-license="C2"  id="dlf-c2" >C2</button>
+            <button class="filter-chip"        data-license="C3"  id="dlf-c3" >C3</button>
+          </div>
+        </div>
+
+        <div class="drivers-grid" id="drivers-grid">
+          <p class="placeholder-text">No hay conductores registrados. Agrega el primero.</p>
+        </div>
+      </section>
+
+      <!-- ═══════════ TAB: REPORTES ═══════════ -->
+      <section class="tab-panel" id="tab-reports" role="tabpanel" aria-labelledby="nav-reports">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Reportes</h1>
+            <p class="page-subtitle">Análisis mensual de horas y compensaciones</p>
+          </div>
+          <div class="page-actions">
+            <select class="select-input" id="report-month" aria-label="Seleccionar mes">
+              <!-- Populated by JS -->
+            </select>
+            <button class="btn btn-secondary" id="btn-export-excel">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Exportar Excel
+            </button>
+            <button class="btn btn-ghost" id="btn-print-report">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Imprimir
+            </button>
+          </div>
+        </div>
+
+        <div id="report-content">
+          <div class="card" id="report-summary-card">
+            <h2 class="card-title">Resumen Mensual de Horas</h2>
+            <div id="report-table-wrapper">
+              <p class="placeholder-text">Seleccione un mes y agregue conductores.</p>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:1.5rem;" id="compensation-card">
+            <h2 class="card-title">Compensaciones Pendientes</h2>
+            <div id="compensation-list">
+              <p class="placeholder-text">Sin compensaciones pendientes.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ TAB: CONFIGURACIÓN ═══════════ -->
+      <section class="tab-panel" id="tab-config" role="tabpanel" aria-labelledby="nav-config">
+        <div class="page-header">
+          <div>
+            <h1 class="page-title">Configuración</h1>
+            <p class="page-subtitle">Parámetros del sistema y regulación aplicable</p>
+          </div>
+        </div>
+
+        <div class="config-grid">
+          <!-- Empresa -->
+          <div class="card config-card">
+            <h2 class="card-title">Empresa</h2>
+            <div class="form-group">
+              <label class="form-label" for="cfg-company">Nombre de la empresa</label>
+              <input class="form-input" type="text" id="cfg-company" placeholder="Transportes CI" />
+            </div>
+          </div>
+
+          <!-- Turnos -->
+          <div class="card config-card">
+            <h2 class="card-title">Horarios de Turno</h2>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="cfg-d-start">Turno D – Inicio</label>
+                <input class="form-input" type="time" id="cfg-d-start" value="07:00" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cfg-d-end">Turno D – Fin</label>
+                <input class="form-input" type="time" id="cfg-d-end" value="17:00" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="cfg-n-start">Turno N – Inicio</label>
+                <input class="form-input" type="time" id="cfg-n-start" value="19:00" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="cfg-n-end">Turno N – Fin</label>
+                <input class="form-input" type="time" id="cfg-n-end" value="05:00" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Metas -->
+          <div class="card config-card">
+            <h2 class="card-title">Metas de Horas</h2>
+            <div class="form-group">
+              <label class="form-label" for="cfg-monthly-target">Meta mensual (horas)</label>
+              <input class="form-input" type="number" id="cfg-monthly-target" value="184" min="100" max="240" />
+              <span class="form-hint">Default: 184h (46h × 4 semanas)</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cfg-weekly-target">Meta semanal (horas)</label>
+              <input class="form-input" type="number" id="cfg-weekly-target" value="46" min="20" max="60" />
+            </div>
+          </div>
+
+          <!-- Regulación -->
+          <div class="card config-card">
+            <h2 class="card-title">Regulación – Ley 2101 de 2021</h2>
+            <div class="form-group">
+              <label class="form-label" for="cfg-reg-year">Año de aplicación</label>
+              <select class="form-input" id="cfg-reg-year">
+                <option value="2024">2024 – 46 h/semana</option>
+                <option value="2025" selected>2025 – 44 h/semana</option>
+                <option value="2026">2026 – 42 h/semana</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Semana laboral</label>
+              <div class="form-hint">Lunes – Sábado · Descanso obligatorio: Domingo</div>
+            </div>
+          </div>
+          
+          <!-- Respaldo de Datos (Backup/Restore) -->
+          <div class="card config-card" style="grid-column: 1 / -1;">
+            <h2 class="card-title">Respaldo de Datos (Backup local)</h2>
+            <p class="form-hint" style="margin-bottom: 1rem;">
+              La aplicación guarda la información en este navegador. Descarga una copia de seguridad para evitar perder tus datos, o restaura una copia anterior.
+            </p>
+            <div class="form-row" style="align-items: center; gap: 1rem;">
+              <button class="btn btn-secondary" id="btn-export-backup" style="flex: 1;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Descargar Copia de Seguridad
+              </button>
+              
+              <div style="flex: 1; display: flex; gap: 0.5rem;">
+                <input type="file" id="input-restore-backup" accept=".json" style="display: none;" />
+                <button class="btn btn-ghost" id="btn-trigger-restore" style="flex: 1;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  Restaurar Copia
+                </button>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+
+        <div class="config-actions">
+          <button class="btn btn-primary" id="btn-save-config">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Guardar Configuración
+          </button>
+          <button class="btn btn-ghost" id="btn-reset-config">Restaurar Defaults</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ──────────────────────────── MODALS ──────────────────────────── -->
+
+  <!-- Modal: Agregar / Editar Conductor -->
+  <div class="modal-overlay hidden" id="modal-driver" role="dialog" aria-modal="true" aria-labelledby="modal-driver-title">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-driver-title">Agregar Conductor</h2>
+        <button class="modal-close" id="btn-close-driver-modal" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="driver-id" />
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="driver-name">Nombre completo *</label>
+            <input class="form-input" type="text" id="driver-name" placeholder="Ej: Juan Pérez" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="driver-cedula">Cédula *</label>
+            <input class="form-input" type="text" id="driver-cedula" placeholder="Ej: 1234567890" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="driver-license">Tipo de licencia</label>
+            <select class="form-input" id="driver-license">
+              <option value="C1">C1</option>
+              <option value="C2">C2</option>
+              <option value="C3">C3</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="driver-start">Fecha de ingreso</label>
+            <input class="form-input" type="date" id="driver-start" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="driver-status">Estado</label>
+          <select class="form-input" id="driver-status">
+            <option value="active">Activo</option>
+            <option value="inactive">Inactivo</option>
+            <option value="vacation">Vacaciones</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="btn-cancel-driver">Cancelar</button>
+        <button class="btn btn-primary" id="btn-save-driver">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notifications -->
+  <div class="toast-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- JS Modular – cargados en orden  <!-- App Modules -->
+  <script src="js/constants.js?v=2"></script>
+  <script src="js/utils.js?v=2"></script>
+  <script src="js/dataManager.js?v=2"></script>
+  <script src="js/scheduler.js?v=2"></script>
+  <script src="js/modules/dashboard.js?v=2"></script>
+  <script src="js/modules/planner.js?v=3"></script>
+  <script src="js/modules/drivers.js?v=2"></script>
+  <script src="js/modules/reports.js?v=2"></script>
+  <script src="js/modules/config.js?v=2"></script>
+  
+  <!-- Main Orchestrator -->
+  <script src="js/app.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+/* ═══════════════════════════════════════════════════════════════════
+   BASE.CSS – Design Tokens · Reset · Utilities · Splash · Print
+   Transportes CI – Sistema de Turnos
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── DESIGN TOKENS ── */
+:root {
+  /* Background scale */
+  --bg-base:        #0d1117;
+  --bg-surface:     #161b22;
+  --bg-elevated:    #1e2530;
+  --bg-overlay:     #252d3a;
+
+  /* Borders */
+  --border-subtle:  rgba(255,255,255,.07);
+  --border-default: rgba(255,255,255,.12);
+
+  /* Accent – Green (on-target) */
+  --green-500: #2ecc71;
+  --green-600: #27ae60;
+  --green-900: rgba(46,204,113,.12);
+
+  /* Accent – Gold */
+  --gold-400:  #f1c40f;
+  --gold-900:  rgba(241,196,15,.1);
+
+  /* Status colors */
+  --red-400:    #e74c3c;
+  --red-900:    rgba(231,76,60,.12);
+  --orange-400: #e67e22;
+  --orange-900: rgba(230,126,34,.12);
+  --blue-400:   #3498db;
+  --blue-900:   rgba(52,152,219,.15);
+  --purple-400: #9b59b6;
+  --purple-900: rgba(155,89,182,.15);
+  --gray-400:   #7f8c8d;
+  --gray-900:   rgba(127,140,141,.15);
+  --yellow-400: #f39c12;
+  --yellow-900: rgba(243,156,18,.15);
+
+  /* Text */
+  --text-primary:   #e6edf3;
+  --text-secondary: #8b949e;
+  --text-muted:     #484f58;
+
+  /* Spacing & shape */
+  --sidebar-w: 240px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* Shadows */
+  --shadow-sm:        0 1px 3px rgba(0,0,0,.4);
+  --shadow-md:        0 4px 16px rgba(0,0,0,.45);
+  --shadow-lg:        0 12px 40px rgba(0,0,0,.55);
+  --shadow-glow-green: 0 0 24px rgba(46,204,113,.25);
+
+  /* Transitions */
+  --ease:       cubic-bezier(.4,0,.2,1);
+  --dur-fast:   150ms;
+  --dur-normal: 250ms;
+  --dur-slow:   400ms;
+}
+
+/* ── RESET ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+}
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { display: block; }
+button    { cursor: pointer; font: inherit; }
+input, select, textarea { font: inherit; }
+ul, ol    { list-style: none; }
+
+/* ── UTILITIES ── */
+.hidden {
+  display: none !important;
+}
+.placeholder-text {
+  color: var(--text-muted);
+  font-size: .875rem;
+  font-style: italic;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+/* ══════════════════════════════════
+   SPLASH SCREEN
+══════════════════════════════════ */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-base);
+  transition: opacity var(--dur-slow) var(--ease),
+              transform var(--dur-slow) var(--ease);
+}
+.splash.fade-out {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
+}
+.splash-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  animation: splashIn .6s var(--ease) both;
+}
+@keyframes splashIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.splash-logo {
+  filter: drop-shadow(var(--shadow-glow-green));
+}
+.splash-title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -.5px;
+  background: linear-gradient(135deg, var(--green-500), var(--gold-400));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.splash-sub {
+  color: var(--text-secondary);
+  font-size: .9rem;
+}
+.splash-bar {
+  width: 200px;
+  height: 3px;
+  background: var(--bg-overlay);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-top: .5rem;
+}
+.splash-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-500), var(--gold-400));
+  border-radius: 99px;
+  animation: loadBar 1.6s var(--ease) forwards;
+}
+@keyframes loadBar {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+/* ══════════════════════════════════
+   SCROLLBARS
+══════════════════════════════════ */
+::-webkit-scrollbar          { width: 6px; height: 6px; }
+::-webkit-scrollbar-track    { background: transparent; }
+::-webkit-scrollbar-thumb    { background: var(--bg-overlay); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border-default); }
+
+/* ══════════════════════════════════
+   PRINT
+══════════════════════════════════ */
+@media print {
+  .sidebar,
+  .page-actions,
+  .shift-legend,
+  .btn,
+  .toast-container { display: none !important; }
+
+  .app            { display: block; }
+  .main-content   { padding: 0; overflow: visible; }
+  .tab-panel      { display: block !important; }
+  body            { background: #fff; color: #000; }
+}

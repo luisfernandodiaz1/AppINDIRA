@@ -1,0 +1,349 @@
+/* ═══════════════════════════════════════════════════════════════════
+   PLANNER.CSS – Weekly Planner Table · Shift Chips · Semaphores
+   Transportes CI – Sistema de Turnos
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Wrapper con scroll ── */
+.planner-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  /* altura máxima con scroll vertical para tablas largas */
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+/* ── Tabla ── */
+.planner-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 860px;
+}
+
+/* ══ CABECERA FIJA ══ */
+.planner-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  padding: .6rem .4rem;
+  text-align: center;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  color: var(--text-secondary);
+  background: var(--bg-elevated);
+  border-bottom: 2px solid var(--border-default);
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0,0,0,.3);
+}
+.planner-table thead th.day-sunday { color: var(--orange-400); }
+
+/* Esquina superior-izquierda: sticky en ambos ejes */
+.planner-table thead th.col-driver {
+  left: 0;
+  z-index: 5;
+  text-align: left;
+  padding-left: .75rem;
+  min-width: 195px;
+}
+
+/* ── Celdas de datos ── */
+.planner-table tbody td {
+  padding: .35rem; /* Reduced padding for density */
+  border-bottom: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.planner-table tfoot td {
+  padding: .4rem .35rem;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
+}
+.planner-table td {
+  vertical-align: middle;
+  text-align: center;
+  transition: background var(--dur-fast) var(--ease);
+}
+.planner-table td:last-child { border-right: none; }
+.planner-table tbody tr:hover td { background: rgba(255,255,255,.02); }
+.planner-table tbody tr:hover td.driver-cell { background: var(--bg-elevated); }
+
+/* ── Columna de conductor: sticky izquierda ── */
+.driver-cell {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--bg-surface);
+  border-right: 2px solid var(--border-default) !important;
+  padding: .4rem .65rem;
+  text-align: left;
+  min-width: 195px;
+  max-width: 230px;
+}
+.driver-cell-name {
+  display: block;
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.driver-cell-sub {
+  font-size: .68rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: .05rem;
+}
+
+/* ══════════════════════════════════
+   SHIFT BUTTONS – clic para ciclar
+══════════════════════════════════ */
+.shift-btn {
+  width: 100%;
+  min-width: 56px;
+  padding: .35rem .2rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid transparent;
+  font-size: .78rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    transform   var(--dur-fast) var(--ease),
+    box-shadow  var(--dur-fast) var(--ease),
+    background  var(--dur-fast) var(--ease);
+  white-space: nowrap;
+}
+.shift-btn:active { transform: scale(.94); }
+.shift-btn:focus-visible {
+  outline: 2px solid var(--green-500);
+  outline-offset: 2px;
+}
+
+/* Estado vacío */
+.shift-btn-empty {
+  background: rgba(255,255,255,.03);
+  color: var(--text-muted);
+  border-color: rgba(255,255,255,.07);
+}
+.shift-btn-empty:hover {
+  background: rgba(255,255,255,.06);
+  color: var(--text-secondary);
+  border-color: var(--border-default);
+}
+
+/* Turno D – Día */
+.shift-btn-D {
+  background: var(--blue-900);
+  color: var(--blue-400);
+  border-color: rgba(52,152,219,.35);
+}
+.shift-btn-D:hover { box-shadow: 0 0 10px rgba(52,152,219,.35); }
+
+/* Turno N – Noche */
+.shift-btn-N {
+  background: var(--purple-900);
+  color: var(--purple-400);
+  border-color: rgba(155,89,182,.35);
+}
+.shift-btn-N:hover { box-shadow: 0 0 10px rgba(155,89,182,.35); }
+
+/* Turno L – Libre */
+.shift-btn-L {
+  background: var(--gray-900);
+  color: var(--gray-400);
+  border-color: rgba(127,140,141,.25);
+}
+
+/* Turno LD – Libre Descanso */
+.shift-btn-LD {
+  background: var(--orange-900);
+  color: var(--orange-400);
+  border-color: rgba(230,126,34,.35);
+}
+.shift-btn-LD:hover { box-shadow: 0 0 10px rgba(230,126,34,.25); }
+
+/* HLD / HLN */
+.shift-btn-HLD,
+.shift-btn-HLN {
+  background: var(--yellow-900);
+  color: var(--yellow-400);
+  border-color: rgba(243,156,18,.35);
+}
+
+/* ── Colores de fondo de celda ── */
+.shift-cell-D   { background: rgba(52,152,219,.06); }
+.shift-cell-N   { background: rgba(155,89,182,.06); }
+.shift-cell-L   { background: rgba(127,140,141,.04); }
+.shift-cell-LD  { background: rgba(230,126,34,.06); }
+.shift-cell-HLD,
+.shift-cell-HLN { background: rgba(243,156,18,.06); }
+
+/* ── Domingo ── */
+.planner-table td.sunday-col {
+  background: rgba(230,126,34,.04);
+}
+
+/* ── Día Actual (Hoy) ── */
+.planner-table th.today-col {
+  background: rgba(46,204,113,.15);
+  color: var(--green-500);
+  border-bottom: 2px solid var(--green-500);
+}
+.planner-table td.today-col {
+  background: rgba(46,204,113,.04);
+  border-left: 1px solid rgba(46,204,113,.3);
+  border-right: 1px solid rgba(46,204,113,.3);
+}
+/* Asegurar que las celdas con shift-cell color no sobreescriban totalmente el borde del día actual */
+.planner-table tbody tr:hover td.today-col { background: rgba(46,204,113,.08); }
+
+/* ── Total de horas ── */
+.hours-cell {
+  text-align: center;
+  font-size: .82rem;
+  font-weight: 700;
+  min-width: 68px;
+  white-space: nowrap;
+  border-left: 1px solid var(--border-subtle) !important;
+}
+.col-total {
+  min-width: 68px;
+  border-left: 1px solid var(--border-subtle) !important;
+}
+.hours-ok    { color: var(--green-500); }
+.hours-over  { color: var(--red-400); }
+.hours-under { color: var(--orange-400); }
+
+/* ── Semáforo ── */
+.semaphore {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  margin-right: .35rem;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.semaphore.ok    { background: var(--green-500); box-shadow: 0 0 5px var(--green-500); }
+.semaphore.over  { background: var(--red-400);   box-shadow: 0 0 5px var(--red-400); }
+.semaphore.under { background: var(--orange-400); box-shadow: 0 0 5px var(--orange-400); }
+
+/* ── Leyenda ── */
+.shift-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem .9rem;
+  padding: .7rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  align-items: center;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .78rem;
+  color: var(--text-secondary);
+}
+
+/* ── Chips de leyenda ── */
+.shift-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .12rem .4rem;
+  border-radius: var(--radius-sm);
+  font-size: .72rem;
+  font-weight: 700;
+}
+.shift-D   { background: var(--blue-900);   color: var(--blue-400); }
+.shift-N   { background: var(--purple-900); color: var(--purple-400); }
+.shift-L   { background: var(--gray-900);   color: var(--gray-400); }
+.shift-LD  { background: var(--orange-900); color: var(--orange-400); }
+.shift-HLD,
+.shift-HLN { background: var(--yellow-900); color: var(--yellow-400); }
+
+/* ── Tooltip de instrucción ── */
+.planner-tip {
+  font-size: .75rem;
+  color: var(--text-muted);
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+}
+
+/* ══════════════════════════════════
+   MEJORAS UX: Descanso + Resumen
+══════════════════════════════════ */
+
+/* Layout interno de la celda conductor */
+.driver-cell-top {
+  display: flex;
+  align-items: center;
+  gap: .25rem;
+  min-width: 0;
+}
+
+/* Badge "Desc. ✓" – visible cuando ya tiene L/LD */
+.rest-assigned-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .2rem;
+  padding: .08rem .35rem;
+  font-size: .62rem;
+  font-weight: 700;
+  border-radius: 99px;
+  background: rgba(46,204,113,.15);
+  color: var(--green-500);
+  border: 1px solid rgba(46,204,113,.3);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: .2rem;
+  animation: fadeIn .25s var(--ease);
+}
+
+/* Mini-resumen de la semana bajo el nombre */
+.driver-week-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .2rem;
+  margin-top: .25rem;
+}
+.week-summary-chip {
+  padding: .05rem .28rem;
+  border-radius: 4px;
+  font-size: .62rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.chip-d    { background: rgba(52,152,219,.2);  color: var(--blue-400); }
+.chip-n    { background: rgba(155,89,182,.2);  color: var(--purple-400); }
+.chip-rest { background: rgba(46,204,113,.15); color: var(--green-500); }
+.chip-holg { background: rgba(243,156,18,.15); color: var(--yellow-400); }
+
+/* Fila con descanso asignado → tenue borde izquierdo verde */
+.planner-table tbody tr.has-rest td.driver-cell {
+  border-left: 3px solid rgba(46,204,113,.5) !important;
+}
+
+/* Fila con DOBLE descanso → alerta naranja */
+.planner-table tbody tr.double-rest td.driver-cell {
+  border-left: 3px solid var(--orange-400) !important;
+}
+.planner-table tbody tr.double-rest {
+  background: rgba(230,126,34,.04);
+}
+
+/* Animación de entrada para badges */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
