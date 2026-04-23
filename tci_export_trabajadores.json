@@ -1,0 +1,327 @@
+{
+  "version": 1,
+  "timestamp": "2026-04-23T03:09:52.869Z",
+  "config": {
+    "company": "Transportes CI",
+    "shiftDStart": "07:00",
+    "shiftDEnd": "17:00",
+    "shiftNStart": "19:00",
+    "shiftNEnd": "05:00",
+    "monthlyTarget": 184,
+    "weeklyTarget": 46,
+    "regulationYear": "2025"
+  },
+  "drivers": [
+    {
+      "id": "drv_1776906800000",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Carlos Mendoza",
+      "cedula": "1098765432",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800001",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Enrique Montero",
+      "cedula": "1001001001",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800002",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Alfredo Tatis",
+      "cedula": "1001001002",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800003",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Jose Gracia",
+      "cedula": "1001001003",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800004",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Jose Pajaro",
+      "cedula": "1001001004",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800005",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Nauro Perez",
+      "cedula": "1001001005",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800006",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Freddys Condes",
+      "cedula": "1001001006",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800007",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Joaquin Mendoza",
+      "cedula": "1001001007",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800008",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Ronald Padilla",
+      "cedula": "1001001008",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800009",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Jorge Arrieta",
+      "cedula": "1001001009",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800010",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Antonio Orozco",
+      "cedula": "1001001010",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800011",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Federico Ballestas",
+      "cedula": "1001001011",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800012",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Jaime Cerda",
+      "cedula": "1001001012",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800013",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Rafael Babilonia",
+      "cedula": "1001001013",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800014",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Jorgeluis Llerena",
+      "cedula": "1001001014",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800015",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Sandy Meza",
+      "cedula": "1001001015",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800016",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Victor Hernandez",
+      "cedula": "1001001016",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800017",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Juan Manjarres",
+      "cedula": "1001001017",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800018",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Hoiner Arroyo",
+      "cedula": "1001001018",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800019",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Luis Fuente",
+      "cedula": "1001001019",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800020",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Willian Lopez",
+      "cedula": "1001001020",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800021",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Victor Medrano",
+      "cedula": "1001001021",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800022",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Cristian Montero",
+      "cedula": "1001001022",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800023",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Dayder Pupo",
+      "cedula": "1001001023",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800024",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Luis Teheran",
+      "cedula": "1001001024",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800025",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Cristian Sepulveda",
+      "cedula": "1001001025",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800026",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Libardo Perez",
+      "cedula": "1001001026",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800027",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Fray Baltazar",
+      "cedula": "1001001027",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800028",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Jose Polo",
+      "cedula": "1001001028",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800029",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Fray Fonseca",
+      "cedula": "1001001029",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    },
+    {
+      "id": "drv_1776906800030",
+      "createdAt": "2023-01-15T00:00:00.000Z",
+      "name": "Luis Nuñez",
+      "cedula": "1001001030",
+      "status": "active",
+      "licenseCategory": "C2",
+      "phone": "",
+      "notes": ""
+    }
+  ],
+  "schedule": {}
+}

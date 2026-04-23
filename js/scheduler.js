@@ -114,5 +114,63 @@ TCI.Scheduler = (() => {
     return 'ok';
   }
 
-  return { calcHours, shiftHours, weekHours, monthHours, getSundayCompensations, suggestWeek, hoursStatus };
+  function weekendEquityReport(drivers, year, monthIndex) {
+    const schedule = DM().getSchedule();
+    const results = [];
+
+    // Identify all Saturdays and Sundays in the given month
+    const dates = [];
+    const date = new Date(year, monthIndex, 1);
+    while (date.getMonth() === monthIndex) {
+      const w = date.getDay();
+      if (w === 6 || w === 0) {
+        dates.push({
+          dateObj: new Date(date),
+          isQ1: date.getDate() <= 15,
+          isSaturday: w === 6,
+          isSunday: w === 0
+        });
+      }
+      date.setDate(date.getDate() + 1);
+    }
+
+    drivers.forEach(driver => {
+      const stats = {
+        q1: { satRest: 0, sunWork: 0 },
+        q2: { satRest: 0, sunWork: 0 }
+      };
+
+      dates.forEach(d => {
+        const wkKey = U().weekKey(U().getMondayOfWeek(d.dateObj));
+        const dayIdx = (d.dateObj.getDay() + 6) % 7; // Mon=0 .. Sun=6
+        const weekData = schedule[wkKey] || {};
+        const driverSched = weekData[driver.id] || {};
+        const shift = driverSched[dayIdx] || '';
+
+        const q = d.isQ1 ? stats.q1 : stats.q2;
+
+        if (d.isSaturday && (shift === 'L' || shift === 'LD')) {
+          q.satRest++;
+        }
+        if (d.isSunday && SUNDAY_WORKING.has(shift)) {
+          q.sunWork++;
+        }
+      });
+
+      results.push({
+        driverName: driver.name,
+        driverCedula: driver.cedula,
+        q1: stats.q1,
+        q2: stats.q2,
+        total: {
+          satRest: stats.q1.satRest + stats.q2.satRest,
+          sunWork: stats.q1.sunWork + stats.q2.sunWork
+        }
+      });
+    });
+
+    return results;
+  }
+
+  return { calcHours, shiftHours, weekHours, monthHours, getSundayCompensations, suggestWeek, hoursStatus, weekendEquityReport };
 })();

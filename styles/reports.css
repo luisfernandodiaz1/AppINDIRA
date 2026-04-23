@@ -71,16 +71,75 @@
   margin-bottom: .5rem;
   font-size: .84rem;
 }
-.comp-driver { font-weight: 700; color: var(--text-primary); }
-.comp-date   { color: var(--text-muted); font-size: .78rem; }
-.comp-badge  {
-  margin-left: auto;
-  background: var(--orange-400);
-  color: var(--bg-base);
-  border-radius: 4px;
-  font-size: .7rem;
+.comp-driver {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.comp-date {
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+.comp-badge {
+  background: var(--orange-900);
+  color:    var(--orange-400);
+  padding:  .2rem .6rem;
+  border-radius: 99px;
+  font-size: .75rem;
   font-weight: 700;
-  padding: .1rem .45rem;
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════
+   EQUITY TABLE (Fines de Semana)
+══════════════════════════════════ */
+.equity-table-container {
+  overflow-x: auto;
+}
+.equity-table th, .equity-table td {
+  text-align: center;
+  border: 1px solid var(--border-subtle);
+}
+/* Cabeceras Superiores */
+.eq-header-q {
+  background: rgba(255,255,255,0.02);
+  border-bottom: none !important;
+}
+.eq-header-tot {
+  background: rgba(52,152,219,.08); /* Azulito suave */
+  border-bottom: none !important;
+  color: var(--blue-400);
+}
+/* Sub Cabeceras (Sábados y Domingos) */
+.eq-header-sat {
+  background: rgba(46,204,113,.12); /* Verde */
+  color: var(--green-500);
+  font-size: .7rem;
+  line-height: 1.2;
+}
+.eq-header-sun {
+  background: rgba(230,126,34,.12); /* Naranja / Durazno */
+  color: var(--orange-400);
+  font-size: .7rem;
+  line-height: 1.2;
+}
+
+/* Celdas de datos */
+.eq-sat {
+  background: rgba(46,204,113,.03);
+}
+.eq-sun {
+  background: rgba(230,126,34,.03);
+}
+.eq-tot-sat {
+  background: rgba(52,152,219,.03);
+  font-weight: bold;
+}
+.eq-tot-sun {
+  background: rgba(52,152,219,.03);
+  font-weight: bold;
+}
+.equity-table tbody tr:hover td {
+  background: rgba(255,255,255,0.05); /* Hover sobre escribe levemente el fondo */
 }
 
 /* ══════════════════════════════════

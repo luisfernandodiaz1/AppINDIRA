@@ -59,6 +59,63 @@ TCI.Reports = (() => {
           <span class="comp-badge">LD Pendiente</span>
         </div>`).join('');
     }
+
+    // Equidad Fines de Semana
+    renderEquityTable(year, month);
+  }
+
+  function renderEquityTable(year, month) {
+    const drivers = DM().getDrivers();
+    const wrapper = document.getElementById('equity-table-wrapper');
+    if (!wrapper) return; // Si no existe en el DOM, ignora
+
+    if (!drivers.length) {
+      wrapper.innerHTML = '<p class="placeholder-text">Sin conductores para el reporte de equidad.</p>';
+      return;
+    }
+
+    const equityData = SC().weekendEquityReport(drivers, year, month - 1);
+    
+    // Función helper para no mostrar ceros secos si el usuario prefiere algo más visible, aunque los dejaré en 0 pero tenues si son 0
+    const formatCell = (val) => val === 0 ? `<span style="opacity: 0.3">0</span>` : `<strong>${val}</strong>`;
+
+    const rows = equityData.map(d => `
+      <tr>
+        <td style="text-align: left; font-weight: 600; padding-left: 1rem;">${d.driverName}</td>
+        <td class="eq-sat">${formatCell(d.q1.satRest)}</td>
+        <td class="eq-sun">${formatCell(d.q1.sunWork)}</td>
+        <td class="eq-sat">${formatCell(d.q2.satRest)}</td>
+        <td class="eq-sun">${formatCell(d.q2.sunWork)}</td>
+        <td class="eq-tot-sat">${formatCell(d.total.satRest)}</td>
+        <td class="eq-tot-sun">${formatCell(d.total.sunWork)}</td>
+      </tr>
+    `).join('');
+
+    wrapper.innerHTML = `
+      <div class="equity-table-container">
+        <table class="report-table equity-table" aria-label="Reporte de equidad de fines de semana">
+          <thead>
+            <tr>
+              <th rowspan="2" style="text-align:left; padding-left:1rem; vertical-align: bottom;">CONDUCTORES</th>
+              <th colspan="2" class="eq-header-q">1 QUINCENA</th>
+              <th colspan="2" class="eq-header-q">2 QUINCENA</th>
+              <th colspan="2" class="eq-header-tot">MES</th>
+            </tr>
+            <tr>
+              <th class="eq-header-sat">SABADOS<br>DESCANSOS</th>
+              <th class="eq-header-sun">DOMINGOS<br>TRABAJADOS</th>
+              <th class="eq-header-sat">SABADOS<br>DESCANSOS</th>
+              <th class="eq-header-sun">DOMINGOS<br>TRABAJADOS</th>
+              <th class="eq-header-sat">SABADOS<br>DESCANSOS</th>
+              <th class="eq-header-sun">DOMINGOS<br>TRABAJADOS</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </div>
+    `;
   }
 
   function exportToExcel() {
@@ -82,6 +139,24 @@ TCI.Reports = (() => {
     const h2    = ['Conductor','Domingo Trabajado','Turno','Estado'];
     const rows2 = SC().getSundayCompensations(drivers, cfg).map(c => [c.driverName, c.sundayDate, c.shift, 'LD Pendiente']);
     XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet([h2,...rows2]), 'Compensaciones');
+
+    const equityData = SC().weekendEquityReport(drivers, year, month - 1);
+    const eqH1 = ['CONDUCTORES', '1 QUINCENA', '', '2 QUINCENA', '', 'MES', ''];
+    const eqH2 = ['', 'SABADOS DESCANSOS', 'DOMINGOS TRABAJADOS', 'SABADOS DESCANSOS', 'DOMINGOS TRABAJADOS', 'SABADOS DESCANSOS', 'DOMINGOS TRABAJADOS'];
+    const eqRows = equityData.map(d => [
+      d.driverName,
+      d.q1.satRest, d.q1.sunWork,
+      d.q2.satRest, d.q2.sunWork,
+      d.total.satRest, d.total.sunWork
+    ]);
+    const wsEquity = XLSX.utils.aoa_to_sheet([eqH1, eqH2, ...eqRows]);
+    // Merge de cabeceras
+    wsEquity['!merges'] = [
+      { s: { r: 0, c: 1 }, e: { r: 0, c: 2 } }, // 1 QUINCENA
+      { s: { r: 0, c: 3 }, e: { r: 0, c: 4 } }, // 2 QUINCENA
+      { s: { r: 0, c: 5 }, e: { r: 0, c: 6 } }  // MES
+    ];
+    XLSX.utils.book_append_sheet(wb, wsEquity, 'Equidad Fines Semana');
 
     const fn = `Turnos_CI_${TCI.MONTH_NAMES[month-1]}_${year}.xlsx`;
     XLSX.writeFile(wb, fn);
